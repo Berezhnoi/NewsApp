@@ -6,13 +6,15 @@
 //
 
 import Foundation
+import UIKit
 
 protocol MainViewProtocol: AnyObject {
-    func displayData(_ articles: [Article])
+    func displayData(_ data: TopHeadlinesResponse)
 }
 
 protocol MainViewDelegate: AnyObject {
     func navigateToArticle(url: URL)
+    func didScroll(_ scrollView: UIScrollView)
 }
 
 protocol MainModelProtocol {

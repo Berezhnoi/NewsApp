@@ -20,7 +20,7 @@ class MainPresenter: MainPresenterProtocol {
         model.fetchData { [weak self] result in
             switch result {
             case .success(let data):
-                self?.view?.displayData(data.articles)
+                self?.view?.displayData(data)
             case .failure(let error):
                 print("Error fetching headlines: \(error)")
             }

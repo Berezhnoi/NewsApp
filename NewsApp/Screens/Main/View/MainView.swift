@@ -75,3 +75,9 @@ extension MainView: UITableViewDelegate {
         delegate?.navigateToArticle(url: articleUrl)
     }
 }
+
+extension MainView: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        delegate?.didScroll(scrollView)
+    }
+}

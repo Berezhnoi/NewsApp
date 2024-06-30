@@ -8,9 +8,13 @@
 import UIKit
 import SafariServices
 
-class MainViewController: UIViewController, MainViewProtocol, MainViewDelegate {
+class MainViewController: UIViewController {
     private var mainView: MainView!
     private var presenter: MainPresenterProtocol!
+    
+    private let searchController = UISearchController(searchResultsController: nil)
+    
+    private var pagination = Pagination()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +29,10 @@ class MainViewController: UIViewController, MainViewProtocol, MainViewDelegate {
         presenter = MainPresenter(view: self, model: model)
         
         presenter.loadData()
+        
+        // Setup search controller
+        navigationItem.searchController = searchController
+        searchController.searchBar.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -37,8 +45,24 @@ class MainViewController: UIViewController, MainViewProtocol, MainViewDelegate {
         navigationController?.navigationBar.prefersLargeTitles = false
     }
     
-    func displayData(_ articles: [Article]) {
-        mainView.articles = articles.compactMap({
+    private func appendData(articles: [Article]) {
+        let newArticles = articles.compactMap({
+            ArticleTableViewCellModel(
+                title: $0.title,
+                description: $0.description ?? "-",
+                url: $0.url,
+                urlToImage: $0.urlToImage,
+                imageData: nil
+            )
+        })
+        mainView.articles.append(contentsOf: newArticles)
+    }
+}
+
+extension MainViewController: MainViewProtocol {
+    func displayData(_ data: TopHeadlinesResponse) {
+        pagination.totalResults = data.totalResults
+        mainView.articles = data.articles.compactMap({
             ArticleTableViewCellModel(
                 title: $0.title,
                 description: $0.description ?? "-",
@@ -48,9 +72,67 @@ class MainViewController: UIViewController, MainViewProtocol, MainViewDelegate {
             )
         })
     }
-    
+}
+
+extension MainViewController: MainViewDelegate {
     func navigateToArticle(url: URL) {
         let safariVC = SFSafariViewController(url: url)
         present(safariVC, animated: true)
+    }
+}
+
+extension MainViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let text = searchBar.text, !text.trimmingCharacters(in: .whitespaces).isEmpty else {
+            presenter.loadData()
+            return
+        }
+        
+        SearchArticleService.getArticleByQuery(with: text, page: 1){ [weak self] result in
+            switch result {
+            case .success(let data):
+                self?.displayData(data)
+            case .failure(let error):
+                print("Error fetching headlines: \(error)")
+            }
+            DispatchQueue.main.async {
+                self?.searchController.dismiss(animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        presenter.loadData()
+    }
+}
+
+extension MainViewController {
+    func didScroll(_ scrollView: UIScrollView) {
+        let position = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let scrollViewHeight = scrollView.frame.size.height
+        
+        if position > (contentHeight - scrollViewHeight - 100) && !pagination.isLoading && mainView.articles.count < pagination.totalResults {
+            
+            guard let searchText = searchController.searchBar.text, !searchText.trimmingCharacters(in: .whitespaces).isEmpty else {
+                return
+            }
+            
+            pagination.isLoading = true
+            pagination.nextPage()
+            
+            SearchArticleService.getArticleByQuery(with: searchText, page: pagination.currentPage) { [weak self] result in
+                switch result {
+                case .success(let data):
+                    self?.pagination.totalResults = data.totalResults
+                    self?.appendData(articles: data.articles)
+                case .failure(let error):
+                    print("Error fetching headlines: \(error)")
+                }
+                DispatchQueue.main.async {
+                    self?.pagination.isLoading = false
+                }
+            }
+        }
     }
 }
