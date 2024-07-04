@@ -15,20 +15,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
 
-        // Create a window using the windowScene
-        window = UIWindow(windowScene: windowScene)
-         
-        // Create the initial view controller
-        let initialViewController = MainViewController()
-         
-        // Create a navigation controller with the initial view controller
-        let navigationController = UINavigationController(rootViewController: initialViewController)
-         
-        // Set the window's root view controller to the navigation controller
-        window?.rootViewController = navigationController
-         
-        // Make the window visible
-        window?.makeKeyAndVisible()
+        let window = UIWindow(windowScene: windowScene)
+        let tabBarController = TabBarController()
+
+        window.rootViewController = tabBarController
+        self.window = window
+        window.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
