@@ -15,12 +15,15 @@ protocol MainViewProtocol: AnyObject {
 protocol MainViewDelegate: AnyObject {
     func navigateToArticle(url: URL)
     func didScroll(_ scrollView: UIScrollView)
+    func onFavoritePress(article: ArticleTableViewCellModel)
 }
 
 protocol MainModelProtocol {
     func fetchData(completion: @escaping (Result<TopHeadlinesResponse, Error>) -> Void)
+    func isFavorite(title: String, url: String) -> Bool
 }
 
 protocol MainPresenterProtocol: AnyObject {
     func loadData()
+    func isFavoriteArticle(title: String, url: String) -> Bool
 }

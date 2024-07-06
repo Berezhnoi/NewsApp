@@ -17,13 +17,7 @@ class FavoritesPresenter: FavoritesPresenterProtocol {
     }
     
     func loadData() {
-        model.fetchData { [weak self] result in
-            switch result {
-            case .success(let data):
-                self?.view?.displayData(data)
-            case .failure(let error):
-                print("Error fetching headlines: \(error)")
-            }
-        }
+        let data = model.fetchData()
+        view?.displayData(data)
     }
 }

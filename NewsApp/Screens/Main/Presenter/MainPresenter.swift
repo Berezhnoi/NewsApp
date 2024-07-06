@@ -26,4 +26,8 @@ class MainPresenter: MainPresenterProtocol {
             }
         }
     }
+    
+    func isFavoriteArticle(title: String, url: String) -> Bool {
+        model.isFavorite(title: title, url: url)
+    }
 }

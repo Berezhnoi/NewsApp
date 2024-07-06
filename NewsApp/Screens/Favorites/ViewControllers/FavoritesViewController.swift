@@ -45,6 +45,18 @@ class FavoritesViewController: UIViewController {
 }
 
 extension FavoritesViewController: MainViewDelegate {
+    func onFavoritePress(article: ArticleTableViewCellModel) {
+        guard !article.isFavorite else {
+            return
+        }
+        
+        // Remove the article from the favoritesView.articles
+        favoritesView.articles = favoritesView.articles.filter { $0.title != article.title }
+        
+        // Delete the article from Core Data
+        CoreDataFavoriteService.shared.deleteFavoriteArticleByTitle(title: article.title)
+    }
+    
     func navigateToArticle(url: URL) {
         let safariVC = SFSafariViewController(url: url)
         present(safariVC, animated: true)
@@ -54,14 +66,15 @@ extension FavoritesViewController: MainViewDelegate {
 }
 
 extension FavoritesViewController: FavoritesViewProtocol {
-    func displayData(_ data: TopHeadlinesResponse) {
-        favoritesView.articles = data.articles.compactMap({
+    func displayData(_ data: [FavoriteArticleCD]) {
+        favoritesView.articles = data.compactMap({
             ArticleTableViewCellModel(
-                title: $0.title,
-                description: $0.description ?? "-",
-                url: $0.url,
+                title: $0.title ?? "",
+                description: $0.descriptionText ?? "",
+                url: $0.url ?? "",
                 urlToImage: $0.urlToImage,
-                imageData: nil
+                imageData: nil,
+                isFavorite: true
             )
         })
     }
@@ -72,18 +85,6 @@ extension FavoritesViewController: UISearchBarDelegate {
         guard let text = searchBar.text, !text.trimmingCharacters(in: .whitespaces).isEmpty else {
             presenter.loadData()
             return
-        }
-        
-        SearchArticleService.getArticleByQuery(with: text, page: 1){ [weak self] result in
-            switch result {
-            case .success(let data):
-                self?.displayData(data)
-            case .failure(let error):
-                print("Error fetching headlines: \(error)")
-            }
-            DispatchQueue.main.async {
-                self?.searchController.dismiss(animated: true, completion: nil)
-            }
         }
     }
     

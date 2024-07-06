@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 protocol FavoritesViewProtocol: AnyObject {
-    func displayData(_ data: TopHeadlinesResponse)
+    func displayData(_ data: [FavoriteArticleCD])
 }
 
 protocol FavoritesViewDelegate: AnyObject {
@@ -18,7 +18,7 @@ protocol FavoritesViewDelegate: AnyObject {
 }
 
 protocol FavoritesModelProtocol {
-    func fetchData(completion: @escaping (Result<TopHeadlinesResponse, Error>) -> Void)
+    func fetchData() -> [FavoriteArticleCD]
 }
 
 protocol FavoritesPresenterProtocol: AnyObject {

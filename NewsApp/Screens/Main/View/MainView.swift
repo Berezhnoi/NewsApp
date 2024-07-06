@@ -58,7 +58,9 @@ extension MainView: UITableViewDataSource {
         else {
             fatalError()
         }
-        cell.configure(with: articles[indexPath.row])
+        cell.configure(with: articles[indexPath.row]) { [weak self] updatedArticle in
+            self?.delegate?.onFavoritePress(article: updatedArticle)
+        }
         return cell
     }
 }

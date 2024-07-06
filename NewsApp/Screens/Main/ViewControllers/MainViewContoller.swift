@@ -16,8 +16,6 @@ class MainViewController: UIViewController {
     
     private var pagination = Pagination()
     
-    private var favoriteArticles: [FavoriteArticleCD] = []
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "News"
@@ -29,9 +27,6 @@ class MainViewController: UIViewController {
         
         let model = MainModel()
         presenter = MainPresenter(view: self, model: model)
-        
-        // Load favorite articles from Core Data
-        favoriteArticles = CoreDataFavoriteService.shared.fetchFavoriteArticles()
         
         presenter.loadData()
         
@@ -52,10 +47,6 @@ class MainViewController: UIViewController {
 }
 
 private extension MainViewController {
-    private func isFavorite(title: String, url: String) -> Bool {
-        return favoriteArticles.contains { $0.title == title && $0.url == url }
-    }
-
     private func appendData(articles: [Article]) {
         let newArticles = articles.compactMap({
             ArticleTableViewCellModel(
@@ -64,7 +55,7 @@ private extension MainViewController {
                 url: $0.url,
                 urlToImage: $0.urlToImage,
                 imageData: nil,
-                isFavorite: isFavorite(title: $0.title, url: $0.url)
+                isFavorite: self.presenter.isFavoriteArticle(title: $0.title, url:  $0.url)
             )
         })
         mainView.articles.append(contentsOf: newArticles)
@@ -81,13 +72,27 @@ extension MainViewController: MainViewProtocol {
                 url: $0.url,
                 urlToImage: $0.urlToImage,
                 imageData: nil,
-                isFavorite: isFavorite(title: $0.title, url: $0.url)
+                isFavorite: self.presenter.isFavoriteArticle(title: $0.title, url:  $0.url)
             )
         })
     }
 }
 
 extension MainViewController: MainViewDelegate {
+    func onFavoritePress(article: ArticleTableViewCellModel) {
+        if article.isFavorite {
+            let payload: CreateFavoriteArticleModel = CreateFavoriteArticleModel(
+                title: article.title,
+                description: article.description,
+                url: article.url,
+                urlToImage: article.urlToImage
+            )
+            CoreDataFavoriteService.shared.saveFavoriteArticle(article: payload)
+        } else {
+            CoreDataFavoriteService.shared.deleteFavoriteArticleByTitle(title: article.title)
+        }
+    }
+    
     func navigateToArticle(url: URL) {
         let safariVC = SFSafariViewController(url: url)
         present(safariVC, animated: true)

@@ -46,6 +46,7 @@ class ArticleTableViewCell: UITableViewCell {
     }()
     
     private var article: ArticleTableViewCellModel?
+    private var heartButtonAction: ((ArticleTableViewCellModel) -> Void)?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -84,7 +85,7 @@ class ArticleTableViewCell: UITableViewCell {
             descriptionLabel.leadingAnchor.constraint(equalTo: articleImageView.trailingAnchor, constant: 10),
             descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
             descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5),
-            descriptionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
+            descriptionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -22),
             
             heartButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
             heartButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -2)
@@ -96,8 +97,13 @@ class ArticleTableViewCell: UITableViewCell {
         minHeightConstraint.isActive = true
     }
     
-    func configure(with article: ArticleTableViewCellModel) {
+    func configure(
+        with article: ArticleTableViewCellModel,
+        heartButtonAction: ((ArticleTableViewCellModel) -> Void)? = nil
+    ) {
         self.article = article
+        self.heartButtonAction = heartButtonAction
+        
         titleLabel.text = article.title
         descriptionLabel.text = article.description
         
@@ -123,17 +129,6 @@ class ArticleTableViewCell: UITableViewCell {
         guard let article = article else { return }
         article.isFavorite.toggle()
         updateHeartButton(isFavorite: article.isFavorite)
-        
-        if article.isFavorite {
-            let payload: CreateFavoriteArticleModel = CreateFavoriteArticleModel(
-                title: article.title,
-                description: article.description,
-                url: article.url,
-                urlToImage: article.urlToImage
-            )
-            CoreDataFavoriteService.shared.saveFavoriteArticle(article: payload)
-        } else {
-            CoreDataFavoriteService.shared.deleteFavoriteArticleByTitle(title: article.title)
-        }
+        heartButtonAction?(article)
     }
 }

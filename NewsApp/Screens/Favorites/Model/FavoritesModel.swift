@@ -8,7 +8,7 @@
 import Foundation
 
 class FavoritesModel: FavoritesModelProtocol {
-    func fetchData(completion: @escaping (Result<TopHeadlinesResponse, Error>) -> Void) {
-        TopHeadlinesService.getTopHeadlines(for: "us", completion: completion)
+    func fetchData() -> [FavoriteArticleCD] {
+        return CoreDataFavoriteService.shared.fetchFavoriteArticles()
     }
 }
