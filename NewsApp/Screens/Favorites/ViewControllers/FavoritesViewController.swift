@@ -28,6 +28,9 @@ class FavoritesViewController: UIViewController {
         
         presenter.loadData()
         
+        // Add an observer for the notification
+        NotificationCenter.default.addObserver(self, selector: #selector(handleArticlesUpdated), name: .articlesUpdated, object: nil)
+        
         // Setup search controller
         navigationItem.searchController = searchController
         searchController.searchBar.delegate = self
@@ -44,6 +47,12 @@ class FavoritesViewController: UIViewController {
     }
 }
 
+private extension FavoritesViewController {
+    @objc private func handleArticlesUpdated() {
+        presenter.loadData()
+    }
+}
+
 extension FavoritesViewController: MainViewDelegate {
     func onFavoritePress(article: ArticleTableViewCellModel) {
         guard !article.isFavorite else {
@@ -55,6 +64,9 @@ extension FavoritesViewController: MainViewDelegate {
         
         // Delete the article from Core Data
         CoreDataFavoriteService.shared.deleteFavoriteArticleByTitle(title: article.title)
+        
+        // Post notification
+        NotificationCenter.default.post(name: .favoritesUpdated, object: nil)
     }
     
     func navigateToArticle(url: URL) {

@@ -20,10 +20,12 @@ protocol MainViewDelegate: AnyObject {
 
 protocol MainModelProtocol {
     func fetchData(completion: @escaping (Result<TopHeadlinesResponse, Error>) -> Void)
-    func isFavorite(title: String, url: String) -> Bool
+    func fetchFavoriteArticles()
+    func isFavorite(title: String) -> Bool
 }
 
 protocol MainPresenterProtocol: AnyObject {
     func loadData()
-    func isFavoriteArticle(title: String, url: String) -> Bool
+    func fetchFavoriteArticles()
+    func isFavoriteArticle(title: String) -> Bool
 }

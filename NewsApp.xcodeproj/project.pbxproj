@@ -12,6 +12,7 @@
 		471A4DB42C397777006B2F95 /* FavoriteArticleCD+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471A4DB22C397777006B2F95 /* FavoriteArticleCD+CoreDataProperties.swift */; };
 		471A4DB62C3977E2006B2F95 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471A4DB52C3977E2006B2F95 /* CoreDataStack.swift */; };
 		471A4DB82C397E5C006B2F95 /* CreateFavoriteArticleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471A4DB72C397E5C006B2F95 /* CreateFavoriteArticleModel.swift */; };
+		471A4DBA2C3997DA006B2F95 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471A4DB92C3997DA006B2F95 /* Notifications.swift */; };
 		473E30EE2C37128400A75CEA /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473E30ED2C37128400A75CEA /* TabBarController.swift */; };
 		473E30F22C37132500A75CEA /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473E30F12C37132500A75CEA /* FavoritesViewController.swift */; };
 		473E30F72C371CAD00A75CEA /* FavoritesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473E30F62C371CAD00A75CEA /* FavoritesPresenter.swift */; };
@@ -48,6 +49,7 @@
 		471A4DB22C397777006B2F95 /* FavoriteArticleCD+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FavoriteArticleCD+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		471A4DB52C3977E2006B2F95 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		471A4DB72C397E5C006B2F95 /* CreateFavoriteArticleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFavoriteArticleModel.swift; sourceTree = "<group>"; };
+		471A4DB92C3997DA006B2F95 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		473E30ED2C37128400A75CEA /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		473E30F12C37132500A75CEA /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		473E30F62C371CAD00A75CEA /* FavoritesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesPresenter.swift; sourceTree = "<group>"; };
@@ -344,6 +346,7 @@
 			isa = PBXGroup;
 			children = (
 				47D9DF4D2C3068A1007AA452 /* UIImageView+LoadImage.swift */,
+				471A4DB92C3997DA006B2F95 /* Notifications.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -447,6 +450,7 @@
 				473E30F92C371CBA00A75CEA /* FavoritesModel.swift in Sources */,
 				47D9DF362C305B63007AA452 /* MainModel.swift in Sources */,
 				47D9DF452C306101007AA452 /* ArticleTableViewCell.swift in Sources */,
+				471A4DBA2C3997DA006B2F95 /* Notifications.swift in Sources */,
 				47BE3B5E2C305023005B1120 /* APIClient.swift in Sources */,
 				471A4DB62C3977E2006B2F95 /* CoreDataStack.swift in Sources */,
 			);

@@ -26,9 +26,13 @@ class MainViewController: UIViewController {
         view.addSubview(mainView)
         
         let model = MainModel()
+        model.fetchFavoriteArticles()
         presenter = MainPresenter(view: self, model: model)
         
         presenter.loadData()
+        
+        // Add an observer for the notification
+        NotificationCenter.default.addObserver(self, selector: #selector(handleFavoritesUpdated), name: .favoritesUpdated, object: nil)
         
         // Setup search controller
         navigationItem.searchController = searchController
@@ -55,10 +59,15 @@ private extension MainViewController {
                 url: $0.url,
                 urlToImage: $0.urlToImage,
                 imageData: nil,
-                isFavorite: self.presenter.isFavoriteArticle(title: $0.title, url:  $0.url)
+                isFavorite: self.presenter.isFavoriteArticle(title: $0.title)
             )
         })
         mainView.articles.append(contentsOf: newArticles)
+    }
+    
+    @objc private func handleFavoritesUpdated() {
+        presenter.fetchFavoriteArticles()
+        presenter.loadData()
     }
 }
 
@@ -72,7 +81,7 @@ extension MainViewController: MainViewProtocol {
                 url: $0.url,
                 urlToImage: $0.urlToImage,
                 imageData: nil,
-                isFavorite: self.presenter.isFavoriteArticle(title: $0.title, url:  $0.url)
+                isFavorite: self.presenter.isFavoriteArticle(title: $0.title)
             )
         })
     }
@@ -91,6 +100,9 @@ extension MainViewController: MainViewDelegate {
         } else {
             CoreDataFavoriteService.shared.deleteFavoriteArticleByTitle(title: article.title)
         }
+        
+        // Post notification
+        NotificationCenter.default.post(name: .articlesUpdated, object: nil)
     }
     
     func navigateToArticle(url: URL) {
