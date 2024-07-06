@@ -37,9 +37,20 @@ class ArticleTableViewCell: UITableViewCell {
         return label
     }()
     
+    let heartButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(systemName: "heart"), for: .normal)
+        button.tintColor = .red
+        return button
+    }()
+    
+    private var article: ArticleTableViewCellModel?
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
+        heartButton.addTarget(self, action: #selector(heartButtonTapped), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
@@ -51,12 +62,14 @@ class ArticleTableViewCell: UITableViewCell {
         titleLabel.text = nil
         descriptionLabel.text = nil
         articleImageView.image = nil
+        article = nil
     }
     
     private func setupViews() {
         contentView.addSubview(articleImageView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(descriptionLabel)
+        contentView.addSubview(heartButton)
         
         NSLayoutConstraint.activate([
             articleImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
@@ -69,9 +82,12 @@ class ArticleTableViewCell: UITableViewCell {
             titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
             
             descriptionLabel.leadingAnchor.constraint(equalTo: articleImageView.trailingAnchor, constant: 10),
-            descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
             descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5),
-            descriptionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10)
+            descriptionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
+            
+            heartButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+            heartButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -2)
         ])
         
         // Set minimum height constraint
@@ -81,6 +97,7 @@ class ArticleTableViewCell: UITableViewCell {
     }
     
     func configure(with article: ArticleTableViewCellModel) {
+        self.article = article
         titleLabel.text = article.title
         descriptionLabel.text = article.description
         
@@ -91,6 +108,32 @@ class ArticleTableViewCell: UITableViewCell {
                 // Cache the image
                 article.imageData = imageData
             }
+        }
+        
+        updateHeartButton(isFavorite: article.isFavorite)
+    }
+    
+    private func updateHeartButton(isFavorite: Bool) {
+        let imageName = isFavorite ? "heart.fill" : "heart"
+        let image = UIImage(systemName: imageName)
+        heartButton.setImage(image, for: .normal)
+    }
+    
+    @objc private func heartButtonTapped() {
+        guard let article = article else { return }
+        article.isFavorite.toggle()
+        updateHeartButton(isFavorite: article.isFavorite)
+        
+        if article.isFavorite {
+            let payload: CreateFavoriteArticleModel = CreateFavoriteArticleModel(
+                title: article.title,
+                description: article.description,
+                url: article.url,
+                urlToImage: article.urlToImage
+            )
+            CoreDataFavoriteService.shared.saveFavoriteArticle(article: payload)
+        } else {
+            CoreDataFavoriteService.shared.deleteFavoriteArticleByTitle(title: article.title)
         }
     }
 }

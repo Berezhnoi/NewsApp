@@ -7,8 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		471A4DAC2C3976FA006B2F95 /* CoreDataFavoriteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471A4DAB2C3976FA006B2F95 /* CoreDataFavoriteService.swift */; };
+		471A4DB32C397777006B2F95 /* FavoriteArticleCD+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471A4DB12C397777006B2F95 /* FavoriteArticleCD+CoreDataClass.swift */; };
+		471A4DB42C397777006B2F95 /* FavoriteArticleCD+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471A4DB22C397777006B2F95 /* FavoriteArticleCD+CoreDataProperties.swift */; };
+		471A4DB62C3977E2006B2F95 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471A4DB52C3977E2006B2F95 /* CoreDataStack.swift */; };
+		471A4DB82C397E5C006B2F95 /* CreateFavoriteArticleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471A4DB72C397E5C006B2F95 /* CreateFavoriteArticleModel.swift */; };
 		473E30EE2C37128400A75CEA /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473E30ED2C37128400A75CEA /* TabBarController.swift */; };
 		473E30F22C37132500A75CEA /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473E30F12C37132500A75CEA /* FavoritesViewController.swift */; };
+		473E30F72C371CAD00A75CEA /* FavoritesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473E30F62C371CAD00A75CEA /* FavoritesPresenter.swift */; };
+		473E30F92C371CBA00A75CEA /* FavoritesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473E30F82C371CBA00A75CEA /* FavoritesModel.swift */; };
+		473E30FB2C371CC900A75CEA /* FavoritesProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473E30FA2C371CC900A75CEA /* FavoritesProtocol.swift */; };
+		473E30FE2C371EC700A75CEA /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473E30FD2C371EC700A75CEA /* FavoritesView.swift */; };
 		476FFF732C31AF5F00CF8746 /* SearchArticleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476FFF722C31AF5F00CF8746 /* SearchArticleService.swift */; };
 		476FFF752C31AF8C00CF8746 /* GetArticleByQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476FFF742C31AF8C00CF8746 /* GetArticleByQuery.swift */; };
 		476FFF792C31BDAE00CF8746 /* Pagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476FFF782C31BDAE00CF8746 /* Pagination.swift */; };
@@ -34,8 +43,17 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		471A4DAB2C3976FA006B2F95 /* CoreDataFavoriteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataFavoriteService.swift; sourceTree = "<group>"; };
+		471A4DB12C397777006B2F95 /* FavoriteArticleCD+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FavoriteArticleCD+CoreDataClass.swift"; sourceTree = "<group>"; };
+		471A4DB22C397777006B2F95 /* FavoriteArticleCD+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FavoriteArticleCD+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		471A4DB52C3977E2006B2F95 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		471A4DB72C397E5C006B2F95 /* CreateFavoriteArticleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFavoriteArticleModel.swift; sourceTree = "<group>"; };
 		473E30ED2C37128400A75CEA /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		473E30F12C37132500A75CEA /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
+		473E30F62C371CAD00A75CEA /* FavoritesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesPresenter.swift; sourceTree = "<group>"; };
+		473E30F82C371CBA00A75CEA /* FavoritesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesModel.swift; sourceTree = "<group>"; };
+		473E30FA2C371CC900A75CEA /* FavoritesProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesProtocol.swift; sourceTree = "<group>"; };
+		473E30FD2C371EC700A75CEA /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
 		476FFF722C31AF5F00CF8746 /* SearchArticleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchArticleService.swift; sourceTree = "<group>"; };
 		476FFF742C31AF8C00CF8746 /* GetArticleByQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetArticleByQuery.swift; sourceTree = "<group>"; };
 		476FFF782C31BDAE00CF8746 /* Pagination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pagination.swift; sourceTree = "<group>"; };
@@ -73,6 +91,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		471A4DA92C397513006B2F95 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				471A4DAB2C3976FA006B2F95 /* CoreDataFavoriteService.swift */,
+				471A4DB52C3977E2006B2F95 /* CoreDataStack.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		471A4DAA2C3976E9006B2F95 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				471A4DB12C397777006B2F95 /* FavoriteArticleCD+CoreDataClass.swift */,
+				471A4DB22C397777006B2F95 /* FavoriteArticleCD+CoreDataProperties.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
 		473E30EC2C37127500A75CEA /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
@@ -84,6 +120,10 @@
 		473E30EF2C3712EC00A75CEA /* Favorites */ = {
 			isa = PBXGroup;
 			children = (
+				473E30FC2C371EB800A75CEA /* View */,
+				473E30F52C371C6100A75CEA /* Presenter */,
+				473E30F42C371C5A00A75CEA /* Model */,
+				473E30F32C371C5100A75CEA /* Protocols */,
 				473E30F02C37130800A75CEA /* ViewControllers */,
 			);
 			path = Favorites;
@@ -95,6 +135,38 @@
 				473E30F12C37132500A75CEA /* FavoritesViewController.swift */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		473E30F32C371C5100A75CEA /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				473E30FA2C371CC900A75CEA /* FavoritesProtocol.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		473E30F42C371C5A00A75CEA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				473E30F82C371CBA00A75CEA /* FavoritesModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		473E30F52C371C6100A75CEA /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				473E30F62C371CAD00A75CEA /* FavoritesPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		473E30FC2C371EB800A75CEA /* View */ = {
+			isa = PBXGroup;
+			children = (
+				473E30FD2C371EC700A75CEA /* FavoritesView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		476FFF712C31AF4600CF8746 /* SearchArticleService */ = {
@@ -153,6 +225,7 @@
 		47BE3B592C304EEB005B1120 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				471A4DA92C397513006B2F95 /* CoreData */,
 				47BE3B5C2C305002005B1120 /* Network */,
 				47BE3B5A2C304F0F005B1120 /* Config.swift */,
 			);
@@ -181,6 +254,7 @@
 		47BE3B642C3052BA005B1120 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				471A4DAA2C3976E9006B2F95 /* CoreData */,
 				47D9DF462C3063DF007AA452 /* DTO */,
 				47BE3B652C3052C2005B1120 /* API */,
 			);
@@ -261,6 +335,7 @@
 			isa = PBXGroup;
 			children = (
 				47D9DF472C306414007AA452 /* ArticleTableViewCellModel.swift */,
+				471A4DB72C397E5C006B2F95 /* CreateFavoriteArticleModel.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -347,24 +422,33 @@
 				47D9DF4E2C3068A1007AA452 /* UIImageView+LoadImage.swift in Sources */,
 				476FFF752C31AF8C00CF8746 /* GetArticleByQuery.swift in Sources */,
 				47D9DF482C306414007AA452 /* ArticleTableViewCellModel.swift in Sources */,
+				471A4DB42C397777006B2F95 /* FavoriteArticleCD+CoreDataProperties.swift in Sources */,
+				471A4DB32C397777006B2F95 /* FavoriteArticleCD+CoreDataClass.swift in Sources */,
 				47BE3B612C305105005B1120 /* TopHeadlinesService.swift in Sources */,
+				471A4DB82C397E5C006B2F95 /* CreateFavoriteArticleModel.swift in Sources */,
 				47BE3B632C30517F005B1120 /* GetTopHeadlinesEndpoint.swift in Sources */,
 				47BE3B672C3052D9005B1120 /* TopHeadlines.swift in Sources */,
 				47D9DF3A2C305B7F007AA452 /* MainViewContoller.swift in Sources */,
+				473E30FB2C371CC900A75CEA /* FavoritesProtocol.swift in Sources */,
 				47BE3B432C304A1A005B1120 /* AppDelegate.swift in Sources */,
 				47BE3B5B2C304F0F005B1120 /* Config.swift in Sources */,
 				476FFF732C31AF5F00CF8746 /* SearchArticleService.swift in Sources */,
 				47D9DF412C305D10007AA452 /* MainPresenter.swift in Sources */,
 				476FFF792C31BDAE00CF8746 /* Pagination.swift in Sources */,
 				47BE3B4D2C304A1A005B1120 /* NewsApp.xcdatamodeld in Sources */,
+				471A4DAC2C3976FA006B2F95 /* CoreDataFavoriteService.swift in Sources */,
 				473E30EE2C37128400A75CEA /* TabBarController.swift in Sources */,
+				473E30F72C371CAD00A75CEA /* FavoritesPresenter.swift in Sources */,
 				47D9DF3C2C305C45007AA452 /* MainView.swift in Sources */,
 				47D9DF3F2C305CA6007AA452 /* MainProtocols.swift in Sources */,
 				473E30F22C37132500A75CEA /* FavoritesViewController.swift in Sources */,
 				47BE3B452C304A1A005B1120 /* SceneDelegate.swift in Sources */,
+				473E30FE2C371EC700A75CEA /* FavoritesView.swift in Sources */,
+				473E30F92C371CBA00A75CEA /* FavoritesModel.swift in Sources */,
 				47D9DF362C305B63007AA452 /* MainModel.swift in Sources */,
 				47D9DF452C306101007AA452 /* ArticleTableViewCell.swift in Sources */,
 				47BE3B5E2C305023005B1120 /* APIClient.swift in Sources */,
+				471A4DB62C3977E2006B2F95 /* CoreDataStack.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -16,6 +16,8 @@ class MainViewController: UIViewController {
     
     private var pagination = Pagination()
     
+    private var favoriteArticles: [FavoriteArticleCD] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "News"
@@ -27,6 +29,9 @@ class MainViewController: UIViewController {
         
         let model = MainModel()
         presenter = MainPresenter(view: self, model: model)
+        
+        // Load favorite articles from Core Data
+        favoriteArticles = CoreDataFavoriteService.shared.fetchFavoriteArticles()
         
         presenter.loadData()
         
@@ -44,7 +49,13 @@ class MainViewController: UIViewController {
         super.viewWillDisappear(animated)
         navigationController?.navigationBar.prefersLargeTitles = false
     }
-    
+}
+
+private extension MainViewController {
+    private func isFavorite(title: String, url: String) -> Bool {
+        return favoriteArticles.contains { $0.title == title && $0.url == url }
+    }
+
     private func appendData(articles: [Article]) {
         let newArticles = articles.compactMap({
             ArticleTableViewCellModel(
@@ -52,7 +63,8 @@ class MainViewController: UIViewController {
                 description: $0.description ?? "-",
                 url: $0.url,
                 urlToImage: $0.urlToImage,
-                imageData: nil
+                imageData: nil,
+                isFavorite: isFavorite(title: $0.title, url: $0.url)
             )
         })
         mainView.articles.append(contentsOf: newArticles)
@@ -68,7 +80,8 @@ extension MainViewController: MainViewProtocol {
                 description: $0.description ?? "-",
                 url: $0.url,
                 urlToImage: $0.urlToImage,
-                imageData: nil
+                imageData: nil,
+                isFavorite: isFavorite(title: $0.title, url: $0.url)
             )
         })
     }
@@ -79,34 +92,7 @@ extension MainViewController: MainViewDelegate {
         let safariVC = SFSafariViewController(url: url)
         present(safariVC, animated: true)
     }
-}
-
-extension MainViewController: UISearchBarDelegate {
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let text = searchBar.text, !text.trimmingCharacters(in: .whitespaces).isEmpty else {
-            presenter.loadData()
-            return
-        }
-        
-        SearchArticleService.getArticleByQuery(with: text, page: 1){ [weak self] result in
-            switch result {
-            case .success(let data):
-                self?.displayData(data)
-            case .failure(let error):
-                print("Error fetching headlines: \(error)")
-            }
-            DispatchQueue.main.async {
-                self?.searchController.dismiss(animated: true, completion: nil)
-            }
-        }
-    }
     
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        presenter.loadData()
-    }
-}
-
-extension MainViewController {
     func didScroll(_ scrollView: UIScrollView) {
         let position = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
@@ -134,5 +120,30 @@ extension MainViewController {
                 }
             }
         }
+    }
+}
+
+extension MainViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let text = searchBar.text, !text.trimmingCharacters(in: .whitespaces).isEmpty else {
+            presenter.loadData()
+            return
+        }
+        
+        SearchArticleService.getArticleByQuery(with: text, page: 1){ [weak self] result in
+            switch result {
+            case .success(let data):
+                self?.displayData(data)
+            case .failure(let error):
+                print("Error fetching headlines: \(error)")
+            }
+            DispatchQueue.main.async {
+                self?.searchController.dismiss(animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        presenter.loadData()
     }
 }

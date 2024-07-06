@@ -13,12 +13,14 @@ class ArticleTableViewCellModel {
     let url: String
     let urlToImage: String?
     var imageData: Data?
+    var isFavorite: Bool = false
     
-    init(title: String, description: String, url: String, urlToImage: String?, imageData: Data? = nil) {
+    init(title: String, description: String, url: String, urlToImage: String?, imageData: Data? = nil, isFavorite: Bool = false) {
         self.title = title
         self.description = description
         self.url = url
         self.urlToImage = urlToImage
         self.imageData = imageData
+        self.isFavorite = isFavorite
     }
 }
