@@ -9,18 +9,18 @@ import UIKit
 import SafariServices
 
 class FavoritesViewController: UIViewController {
-    private var favoritesView: FavoritesView!
+    private var favoritesView: ArticleView!
     private var presenter: FavoritesPresenterProtocol!
     
     private let searchController = UISearchController(searchResultsController: nil)
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         title = "Favorites"
         
-        favoritesView = FavoritesView(frame: view.bounds)
-        favoritesView.setMainViewDelegate(mainViewDelegate: self)
+        favoritesView = ArticleView(frame: view.bounds)
+        favoritesView.delegate = self
         view.addSubview(favoritesView)
         
         let model = FavoritesModel()
@@ -53,7 +53,7 @@ private extension FavoritesViewController {
     }
 }
 
-extension FavoritesViewController: MainViewDelegate {
+extension FavoritesViewController: ArticleViewDelegate {
     func onFavoritePress(article: ArticleTableViewCellModel) {
         guard !article.isFavorite else {
             return

@@ -1,19 +1,20 @@
 //
-//  MainView.swift
+//  ArticleView.swift
 //  NewsApp
 //
-//  Created by rendi on 29.06.2024.
+//  Created by rendi on 07.07.2024.
 //
 
 import UIKit
 
-class MainView: UIView {
-    weak var delegate: MainViewDelegate?
+class ArticleView: UIView {
+    weak var delegate: ArticleViewDelegate?
 
     private let tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(ArticleTableViewCell.self, forCellReuseIdentifier: ArticleTableViewCell.identifier)
+        tableView.separatorStyle = .none // Remove separator lines
         return tableView
     }()
     
@@ -48,7 +49,7 @@ class MainView: UIView {
     }
 }
 
-extension MainView: UITableViewDataSource {
+extension ArticleView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return articles.count
     }
@@ -65,7 +66,7 @@ extension MainView: UITableViewDataSource {
     }
 }
 
-extension MainView: UITableViewDelegate {
+extension ArticleView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let article = articles[indexPath.row]
@@ -78,8 +79,9 @@ extension MainView: UITableViewDelegate {
     }
 }
 
-extension MainView: UIScrollViewDelegate {
+extension ArticleView: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         delegate?.didScroll(scrollView)
     }
 }
+

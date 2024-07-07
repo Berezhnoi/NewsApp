@@ -12,11 +12,6 @@ protocol FavoritesViewProtocol: AnyObject {
     func displayData(_ data: [FavoriteArticleCD])
 }
 
-protocol FavoritesViewDelegate: AnyObject {
-    func navigateToArticle(url: URL)
-    func didScroll(_ scrollView: UIScrollView)
-}
-
 protocol FavoritesModelProtocol {
     func fetchData() -> [FavoriteArticleCD]
 }

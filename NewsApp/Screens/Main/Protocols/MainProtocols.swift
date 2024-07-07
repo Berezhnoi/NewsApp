@@ -12,12 +12,6 @@ protocol MainViewProtocol: AnyObject {
     func displayData(_ data: TopHeadlinesResponse)
 }
 
-protocol MainViewDelegate: AnyObject {
-    func navigateToArticle(url: URL)
-    func didScroll(_ scrollView: UIScrollView)
-    func onFavoritePress(article: ArticleTableViewCellModel)
-}
-
 protocol MainModelProtocol {
     func fetchData(completion: @escaping (Result<TopHeadlinesResponse, Error>) -> Void)
     func fetchFavoriteArticles()

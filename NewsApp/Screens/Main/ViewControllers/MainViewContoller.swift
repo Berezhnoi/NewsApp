@@ -9,7 +9,7 @@ import UIKit
 import SafariServices
 
 class MainViewController: UIViewController {
-    private var mainView: MainView!
+    private var mainView: ArticleView!
     private var presenter: MainPresenterProtocol!
     
     private let searchController = UISearchController(searchResultsController: nil)
@@ -19,9 +19,9 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "News"
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         
-        mainView = MainView(frame: view.bounds)
+        mainView = ArticleView(frame: view.bounds)
         mainView.delegate = self
         view.addSubview(mainView)
         
@@ -87,7 +87,7 @@ extension MainViewController: MainViewProtocol {
     }
 }
 
-extension MainViewController: MainViewDelegate {
+extension MainViewController: ArticleViewDelegate {
     func onFavoritePress(article: ArticleTableViewCellModel) {
         if article.isFavorite {
             let payload: CreateFavoriteArticleModel = CreateFavoriteArticleModel(

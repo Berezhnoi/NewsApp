@@ -15,7 +15,7 @@ class ArticleTableViewCell: UITableViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.backgroundColor = .secondarySystemBackground
+        imageView.backgroundColor = .gray
         imageView.layer.cornerRadius = 4
         imageView.layer.masksToBounds = true
         return imageView
@@ -67,35 +67,48 @@ class ArticleTableViewCell: UITableViewCell {
     }
     
     private func setupViews() {
-        contentView.addSubview(articleImageView)
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(descriptionLabel)
-        contentView.addSubview(heartButton)
-        
+        let cellWrapperView = UIView()
+        cellWrapperView.translatesAutoresizingMaskIntoConstraints = false
+        cellWrapperView.backgroundColor = .secondarySystemBackground
+        cellWrapperView.layer.cornerRadius = 8
+        cellWrapperView.layer.masksToBounds = true
+        contentView.addSubview(cellWrapperView)
+
+        cellWrapperView.addSubview(articleImageView)
+        cellWrapperView.addSubview(titleLabel)
+        cellWrapperView.addSubview(descriptionLabel)
+        cellWrapperView.addSubview(heartButton)
+
         NSLayoutConstraint.activate([
-            articleImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            articleImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
+            cellWrapperView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            cellWrapperView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
+            cellWrapperView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            cellWrapperView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0),
+
+            articleImageView.leadingAnchor.constraint(equalTo: cellWrapperView.leadingAnchor, constant: 10),
+            articleImageView.topAnchor.constraint(equalTo: cellWrapperView.topAnchor, constant: 10),
             articleImageView.widthAnchor.constraint(equalToConstant: 80),
             articleImageView.heightAnchor.constraint(equalToConstant: 80),
-            
+
             titleLabel.leadingAnchor.constraint(equalTo: articleImageView.trailingAnchor, constant: 10),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-            
+            titleLabel.trailingAnchor.constraint(equalTo: cellWrapperView.trailingAnchor, constant: -10),
+            titleLabel.topAnchor.constraint(equalTo: cellWrapperView.topAnchor, constant: 10),
+
             descriptionLabel.leadingAnchor.constraint(equalTo: articleImageView.trailingAnchor, constant: 10),
-            descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
+            descriptionLabel.trailingAnchor.constraint(equalTo: cellWrapperView.trailingAnchor, constant: -15),
             descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5),
-            descriptionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -22),
-            
-            heartButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
-            heartButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -2)
+            descriptionLabel.bottomAnchor.constraint(equalTo: cellWrapperView.bottomAnchor, constant: -22),
+
+            heartButton.trailingAnchor.constraint(equalTo: cellWrapperView.trailingAnchor, constant: -8),
+            heartButton.bottomAnchor.constraint(equalTo: cellWrapperView.bottomAnchor, constant: -2)
         ])
-        
+
         // Set minimum height constraint
         let minHeightConstraint = contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 100)
         minHeightConstraint.priority = .defaultHigh
         minHeightConstraint.isActive = true
     }
+
     
     func configure(
         with article: ArticleTableViewCellModel,
