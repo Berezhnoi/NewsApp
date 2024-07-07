@@ -29,20 +29,14 @@ class TabBarController: UITabBarController {
         let categoriesViewController = CategoriesViewController()
         categoriesViewController.title = "Categories"
         categoriesViewController.tabBarItem = UITabBarItem(title: "Categories", image: UIImage(systemName: "square.grid.2x2"), selectedImage: UIImage(systemName: "square.grid.2x2.fill"))
-        
-        // Create the settings view controller
-        let settingsViewController = UIViewController()
-        settingsViewController.title = "Settings"
-        settingsViewController.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "gear"), selectedImage: UIImage(systemName: "gear.fill"))
 
         // Embed them in navigation controllers if needed
         let navController1 = UINavigationController(rootViewController: mainViewController)
         let navController2 = UINavigationController(rootViewController: favoritesViewController)
         let navController3 = UINavigationController(rootViewController: categoriesViewController)
-        let navController4 = UINavigationController(rootViewController: settingsViewController)
 
         // Set the view controllers for the tab bar controller
-        viewControllers = [navController1, navController2, navController3, navController4]
+        viewControllers = [navController1, navController2, navController3]
     }
 }
 

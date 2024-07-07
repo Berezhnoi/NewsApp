@@ -10,6 +10,8 @@ import UIKit
 class ArticleTableViewCell: UITableViewCell {
     static let identifier = "ArticleTableViewCell"
     
+    private let placeholderImage = UIImage(named: "placeholder_image")
+    
     let articleImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -104,7 +106,7 @@ class ArticleTableViewCell: UITableViewCell {
         ])
 
         // Set minimum height constraint
-        let minHeightConstraint = contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 100)
+        let minHeightConstraint = contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 110)
         minHeightConstraint.priority = .defaultHigh
         minHeightConstraint.isActive = true
     }
@@ -119,6 +121,9 @@ class ArticleTableViewCell: UITableViewCell {
         
         titleLabel.text = article.title
         descriptionLabel.text = article.description
+        
+        // Set placeholder image initially
+        articleImageView.image = placeholderImage
         
         if let imageData = article.imageData {
             articleImageView.image = UIImage(data: imageData)

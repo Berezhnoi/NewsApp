@@ -14,5 +14,6 @@ extension Notification.Name {
     /// Notification posted when articles are updated, indicating that the list of articles has changed.
     static let articlesUpdated = Notification.Name("articlesUpdated")
     
-    
+    /// Notification posted when the country is changed.
+    static let countryChanged = Notification.Name("countryChanged")
 }

@@ -11,4 +11,5 @@ protocol ArticleViewDelegate: AnyObject {
     func navigateToArticle(url: URL)
     func didScroll(_ scrollView: UIScrollView)
     func onFavoritePress(article: ArticleTableViewCellModel)
+    func didPullToRefresh()
 }

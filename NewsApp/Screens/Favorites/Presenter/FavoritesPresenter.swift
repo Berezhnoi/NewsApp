@@ -20,4 +20,8 @@ class FavoritesPresenter: FavoritesPresenterProtocol {
         let data = model.fetchData()
         view?.displayData(data)
     }
+    
+    func searchFavorites(with query: String) -> [FavoriteArticleCD] {
+        return model.searchFavorites(with: query)
+    }
 }

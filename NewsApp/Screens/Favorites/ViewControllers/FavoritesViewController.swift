@@ -26,7 +26,7 @@ class FavoritesViewController: UIViewController {
         let model = FavoritesModel()
         presenter = FavoritesPresenter(view: self, model: model)
         
-        presenter.loadData()
+        loadInitialData()
         
         // Add an observer for the notification
         NotificationCenter.default.addObserver(self, selector: #selector(handleArticlesUpdated), name: .articlesUpdated, object: nil)
@@ -48,12 +48,22 @@ class FavoritesViewController: UIViewController {
 }
 
 private extension FavoritesViewController {
-    @objc private func handleArticlesUpdated() {
+    private func loadInitialData() {
+        searchController.searchBar.text = nil
         presenter.loadData()
+    }
+    
+    @objc private func handleArticlesUpdated() {
+        loadInitialData()
     }
 }
 
 extension FavoritesViewController: ArticleViewDelegate {
+    func didPullToRefresh() {
+        loadInitialData()
+        favoritesView.endRefreshing()
+    }
+    
     func onFavoritePress(article: ArticleTableViewCellModel) {
         guard !article.isFavorite else {
             return
@@ -94,13 +104,14 @@ extension FavoritesViewController: FavoritesViewProtocol {
 
 extension FavoritesViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let text = searchBar.text, !text.trimmingCharacters(in: .whitespaces).isEmpty else {
-            presenter.loadData()
-            return
-        }
+         guard let searchText = searchBar.text, !searchText.trimmingCharacters(in: .whitespaces).isEmpty else {
+             return
+         }
+         let favorites = presenter.searchFavorites(with: searchText)
+         displayData(favorites)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        presenter.loadData()
+        loadInitialData()
     }
 }

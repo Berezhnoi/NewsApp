@@ -13,6 +13,7 @@ class UserDefaultsCountryService {
     
     static func saveCountryCode(_ code: String) {
         userDefaults.set(code, forKey: countryCodeKey)
+        NotificationCenter.default.post(name: .countryChanged, object: nil)
     }
     
     static func getCountryCode() -> String? {

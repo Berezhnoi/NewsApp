@@ -18,6 +18,8 @@ class ArticleView: UIView {
         return tableView
     }()
     
+    private let refreshControl = UIRefreshControl()
+    
     var articles: [ArticleTableViewCellModel] = [] {
         didSet {
             DispatchQueue.main.async {
@@ -46,6 +48,18 @@ class ArticleView: UIView {
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
+        
+        // Add refresh control to the table view
+        tableView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+    }
+    
+    @objc private func refreshData() {
+        delegate?.didPullToRefresh()
+    }
+    
+    func endRefreshing() {
+        refreshControl.endRefreshing()
     }
 }
 

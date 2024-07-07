@@ -30,10 +30,11 @@ class MainViewController: UIViewController {
         model.fetchFavoriteArticles()
         presenter = MainPresenter(view: self, model: model)
         
-        presenter.loadData(countryCode: UserDefaultsCountryService.getCountryCode())
+        loadInitialData()
         
-        // Add an observer for the notification
+        // Add an observers for notification
         NotificationCenter.default.addObserver(self, selector: #selector(handleFavoritesUpdated), name: .favoritesUpdated, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleCountryChanged), name: .countryChanged, object: nil)
         
         // Setup search controller
         navigationItem.searchController = searchController
@@ -54,6 +55,11 @@ class MainViewController: UIViewController {
 }
 
 private extension MainViewController {
+    private func loadInitialData() {
+        searchController.searchBar.text = nil
+        presenter.loadData(countryCode: UserDefaultsCountryService.getCountryCode())
+    }
+    
     private func appendData(articles: [Article]) {
         let newArticles = articles.compactMap({
             ArticleTableViewCellModel(
@@ -70,7 +76,11 @@ private extension MainViewController {
     
     @objc private func handleFavoritesUpdated() {
         presenter.fetchFavoriteArticles()
-        presenter.loadData(countryCode: UserDefaultsCountryService.getCountryCode())
+        loadInitialData()
+    }
+    
+    @objc private func handleCountryChanged() {
+        loadInitialData()
     }
     
     private func setupDropdownMenu() {
@@ -102,6 +112,11 @@ extension MainViewController: MainViewProtocol {
 }
 
 extension MainViewController: ArticleViewDelegate {
+    func didPullToRefresh() {
+        loadInitialData()
+        mainView.endRefreshing()
+    }
+    
     func onFavoritePress(article: ArticleTableViewCellModel) {
         if article.isFavorite {
             let payload: CreateFavoriteArticleModel = CreateFavoriteArticleModel(
@@ -160,14 +175,13 @@ extension MainViewController: DropdownMenuDelegate {
             return
         }
         UserDefaultsCountryService.saveCountryCode(selectedCountryCode)
-        presenter.loadData(countryCode: selectedCountryCode)
     }
 }
 
 extension MainViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let text = searchBar.text, !text.trimmingCharacters(in: .whitespaces).isEmpty else {
-            presenter.loadData(countryCode: UserDefaultsCountryService.getCountryCode())
+            loadInitialData()
             return
         }
         
@@ -185,6 +199,6 @@ extension MainViewController: UISearchBarDelegate {
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        presenter.loadData(countryCode: UserDefaultsCountryService.getCountryCode())
+        loadInitialData()
     }
 }

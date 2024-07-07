@@ -40,11 +40,14 @@ class CategoryNewsViewController: UIViewController {
         let model = CategoryNewsModel()
         presenter = CategoryNewsPresenter(category: category, view: self, model: model)
         
-        presenter.loadData(countryCode: UserDefaultsCountryService.getCountryCode())
+        loadInitialData()
         
         // Setup search controller
         navigationItem.searchController = searchController
         searchController.searchBar.delegate = self
+        
+        // Add an observers for notification
+        NotificationCenter.default.addObserver(self, selector: #selector(handleCountryChanged), name: .countryChanged, object: nil)
         
         setupDropdownMenu()
     }
@@ -61,6 +64,11 @@ class CategoryNewsViewController: UIViewController {
 }
 
 private extension CategoryNewsViewController {
+    private func loadInitialData() {
+        searchController.searchBar.text = nil
+        presenter.loadData(countryCode: UserDefaultsCountryService.getCountryCode())
+    }
+
     private func setupDropdownMenu() {
          let menuButton = UIBarButtonItem(image: UIImage(systemName: "arrowtriangle.down.fill"), style: .plain, target: self, action: #selector(showDropdownMenu))
          navigationItem.rightBarButtonItem = menuButton
@@ -71,6 +79,10 @@ private extension CategoryNewsViewController {
      @objc private func showDropdownMenu() {
          dropdownMenuView.showDropdown(in: view)
      }
+    
+     @objc private func handleCountryChanged() {
+         loadInitialData()
+     }
 }
 
 extension CategoryNewsViewController: DropdownMenuDelegate {
@@ -79,11 +91,14 @@ extension CategoryNewsViewController: DropdownMenuDelegate {
             return
         }
         UserDefaultsCountryService.saveCountryCode(selectedCountryCode)
-        presenter.loadData(countryCode: selectedCountryCode)
     }
 }
 
 extension CategoryNewsViewController: ArticleViewDelegate {
+    func didPullToRefresh() {
+        categoryNewsView.endRefreshing()
+    }
+    
     func onFavoritePress(article: ArticleTableViewCellModel) {
         guard !article.isFavorite else {
             return

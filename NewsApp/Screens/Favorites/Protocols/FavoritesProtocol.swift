@@ -11,9 +11,11 @@ protocol FavoritesViewProtocol: AnyObject {
 
 protocol FavoritesModelProtocol {
     func fetchData() -> [FavoriteArticleCD]
+    func searchFavorites(with query: String) -> [FavoriteArticleCD]
 }
 
 protocol FavoritesPresenterProtocol: AnyObject {
     func loadData()
+    func searchFavorites(with query: String) -> [FavoriteArticleCD]
 }
 
