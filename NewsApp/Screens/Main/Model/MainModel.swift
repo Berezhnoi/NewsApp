@@ -18,7 +18,7 @@ class MainModel: MainModelProtocol {
         return favoriteArticles.contains { $0.title == title }
     }
 
-    func fetchData(completion: @escaping (Result<TopHeadlinesResponse, Error>) -> Void) {
-        TopHeadlinesService.getTopHeadlines(for: "us", completion: completion)
+    func fetchData(countryCode: String? = nil, completion: @escaping (Result<TopHeadlinesResponse, Error>) -> Void) {
+        TopHeadlinesService.getTopHeadlines(for: countryCode, completion: completion)
     }
 }

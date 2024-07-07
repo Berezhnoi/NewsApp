@@ -13,13 +13,13 @@ protocol MainViewProtocol: AnyObject {
 }
 
 protocol MainModelProtocol {
-    func fetchData(completion: @escaping (Result<TopHeadlinesResponse, Error>) -> Void)
+    func fetchData(countryCode: String?, completion: @escaping (Result<TopHeadlinesResponse, Error>) -> Void)
     func fetchFavoriteArticles()
     func isFavorite(title: String) -> Bool
 }
 
 protocol MainPresenterProtocol: AnyObject {
-    func loadData()
+    func loadData(countryCode: String?)
     func fetchFavoriteArticles()
     func isFavoriteArticle(title: String) -> Bool
 }

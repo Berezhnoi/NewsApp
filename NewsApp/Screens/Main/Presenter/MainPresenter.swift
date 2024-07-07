@@ -16,8 +16,8 @@ class MainPresenter: MainPresenterProtocol {
         self.model = model
     }
     
-    func loadData() {
-        model.fetchData { [weak self] result in
+    func loadData(countryCode: String? = nil) {
+        model.fetchData(countryCode: countryCode) { [weak self] result in
             switch result {
             case .success(let data):
                 self?.view?.displayData(data)

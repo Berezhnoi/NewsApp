@@ -12,8 +12,10 @@ class MainViewController: UIViewController {
     private var mainView: ArticleView!
     private var presenter: MainPresenterProtocol!
     
+    private let dropdownMenu = DropdownMenuView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
     private let searchController = UISearchController(searchResultsController: nil)
     
+    private var currentCountryCode: String? = nil // Default country code
     private var pagination = Pagination()
     
     override func viewDidLoad() {
@@ -29,7 +31,7 @@ class MainViewController: UIViewController {
         model.fetchFavoriteArticles()
         presenter = MainPresenter(view: self, model: model)
         
-        presenter.loadData()
+        presenter.loadData(countryCode: currentCountryCode)
         
         // Add an observer for the notification
         NotificationCenter.default.addObserver(self, selector: #selector(handleFavoritesUpdated), name: .favoritesUpdated, object: nil)
@@ -37,6 +39,17 @@ class MainViewController: UIViewController {
         // Setup search controller
         navigationItem.searchController = searchController
         searchController.searchBar.delegate = self
+        
+        // Setup dropdown menu in navigation bar
+        let dropdownButton = UIBarButtonItem(image: UIImage(systemName: "arrowtriangle.down.fill"), style: .plain, target: self, action: #selector(dropdownButtonTapped))
+        navigationItem.rightBarButtonItem = dropdownButton
+        
+        dropdownMenu.delegate = self
+    }
+    
+    @objc private func dropdownButtonTapped() {
+        dropdownMenu.frame.origin = CGPoint(x: view.frame.width - dropdownMenu.frame.width - 16, y: navigationController?.navigationBar.frame.height ?? 0)
+        view.addSubview(dropdownMenu)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -67,7 +80,7 @@ private extension MainViewController {
     
     @objc private func handleFavoritesUpdated() {
         presenter.fetchFavoriteArticles()
-        presenter.loadData()
+        presenter.loadData(countryCode: currentCountryCode)
     }
 }
 
@@ -140,10 +153,18 @@ extension MainViewController: ArticleViewDelegate {
     }
 }
 
+extension MainViewController: DropdownMenuDelegate {
+    func didSelectCountry(_ countryCode: String?) {
+        currentCountryCode = countryCode
+        presenter.loadData(countryCode: countryCode)
+        dropdownMenu.removeFromSuperview()
+    }
+}
+
 extension MainViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let text = searchBar.text, !text.trimmingCharacters(in: .whitespaces).isEmpty else {
-            presenter.loadData()
+            presenter.loadData(countryCode: currentCountryCode)
             return
         }
         
@@ -161,6 +182,6 @@ extension MainViewController: UISearchBarDelegate {
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        presenter.loadData()
+        presenter.loadData(countryCode: currentCountryCode)
     }
 }

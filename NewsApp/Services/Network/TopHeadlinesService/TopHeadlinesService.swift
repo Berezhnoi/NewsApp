@@ -11,7 +11,7 @@ class TopHeadlinesService {
     private static let apiClient: APIClient = APIClient()
     
     public static func getTopHeadlines(
-        for countryCode: String,
+        for countryCode: String?,
         category: String? = nil,
         completion: @escaping (Result<TopHeadlinesResponse, Error>) -> Void)
     {
