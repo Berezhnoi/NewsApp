@@ -57,6 +57,7 @@ class MainViewController: UIViewController {
 private extension MainViewController {
     private func loadInitialData() {
         searchController.searchBar.text = nil
+        pagination.reset()
         presenter.loadData(countryCode: UserDefaultsCountryService.getCountryCode())
     }
     
@@ -146,14 +147,12 @@ extension MainViewController: ArticleViewDelegate {
         
         if position > (contentHeight - scrollViewHeight - 100) && !pagination.isLoading && mainView.articles.count < pagination.totalResults {
             
-            guard let searchText = searchController.searchBar.text, !searchText.trimmingCharacters(in: .whitespaces).isEmpty else {
-                return
-            }
-            
             pagination.isLoading = true
             pagination.nextPage()
             
-            SearchArticleService.getArticleByQuery(with: searchText, page: pagination.currentPage) { [weak self] result in
+            TopHeadlinesService.getTopHeadlines(
+                for: UserDefaultsCountryService.getCountryCode(),
+                page: pagination.currentPage) { [weak self] result in
                 switch result {
                 case .success(let data):
                     self?.pagination.totalResults = data.totalResults
@@ -185,17 +184,17 @@ extension MainViewController: UISearchBarDelegate {
             return
         }
         
-        SearchArticleService.getArticleByQuery(with: text, page: 1){ [weak self] result in
-            switch result {
-            case .success(let data):
-                self?.displayData(data)
-            case .failure(let error):
-                print("Error fetching headlines: \(error)")
-            }
-            DispatchQueue.main.async {
-                self?.searchController.dismiss(animated: true, completion: nil)
-            }
-        }
+//        SearchArticleService.getArticleByQuery(with: text, page: 1){ [weak self] result in
+//            switch result {
+//            case .success(let data):
+//                self?.displayData(data)
+//            case .failure(let error):
+//                print("Error fetching headlines: \(error)")
+//            }
+//            DispatchQueue.main.async {
+//                self?.searchController.dismiss(animated: true, completion: nil)
+//            }
+//        }
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {

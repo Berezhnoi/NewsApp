@@ -46,7 +46,8 @@ class CategoryNewsViewController: UIViewController {
         navigationItem.searchController = searchController
         searchController.searchBar.delegate = self
         
-        // Add an observers for notification
+        // Add observers for notification
+        NotificationCenter.default.addObserver(self, selector: #selector(handleFavoritesUpdated), name: .favoritesUpdated, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleCountryChanged), name: .countryChanged, object: nil)
         
         setupDropdownMenu()
@@ -66,7 +67,22 @@ class CategoryNewsViewController: UIViewController {
 private extension CategoryNewsViewController {
     private func loadInitialData() {
         searchController.searchBar.text = nil
+        pagination.reset()
         presenter.loadData(countryCode: UserDefaultsCountryService.getCountryCode())
+    }
+    
+    private func appendData(articles: [Article]) {
+        let newArticles = articles.compactMap({
+            ArticleTableViewCellModel(
+                title: $0.title,
+                description: $0.description ?? "-",
+                url: $0.url,
+                urlToImage: $0.urlToImage,
+                imageData: nil,
+                isFavorite: self.presenter.isFavoriteArticle(title: $0.title)
+            )
+        })
+        categoryNewsView.articles.append(contentsOf: newArticles)
     }
 
     private func setupDropdownMenu() {
@@ -80,18 +96,14 @@ private extension CategoryNewsViewController {
          dropdownMenuView.showDropdown(in: view)
      }
     
+     @objc private func handleFavoritesUpdated() {
+        presenter.fetchFavoriteArticles()
+        loadInitialData()
+     }
+    
      @objc private func handleCountryChanged() {
          loadInitialData()
      }
-}
-
-extension CategoryNewsViewController: DropdownMenuDelegate {
-    func didSelectOption(_ option: String?) {
-        guard let selectedCountryCode = option else {
-            return
-        }
-        UserDefaultsCountryService.saveCountryCode(selectedCountryCode)
-    }
 }
 
 extension CategoryNewsViewController: ArticleViewDelegate {
@@ -100,9 +112,20 @@ extension CategoryNewsViewController: ArticleViewDelegate {
     }
     
     func onFavoritePress(article: ArticleTableViewCellModel) {
-        guard !article.isFavorite else {
-            return
+        if article.isFavorite {
+            let payload: CreateFavoriteArticleModel = CreateFavoriteArticleModel(
+                title: article.title,
+                description: article.description,
+                url: article.url,
+                urlToImage: article.urlToImage
+            )
+            CoreDataFavoriteService.shared.saveFavoriteArticle(article: payload)
+        } else {
+            CoreDataFavoriteService.shared.deleteFavoriteArticleByTitle(title: article.title)
         }
+        
+        // Post notification
+        NotificationCenter.default.post(name: .articlesUpdated, object: nil)
     }
     
     func navigateToArticle(url: URL) {
@@ -110,7 +133,34 @@ extension CategoryNewsViewController: ArticleViewDelegate {
         present(safariVC, animated: true)
     }
     
-    func didScroll(_ scrollView: UIScrollView) {}
+    func didScroll(_ scrollView: UIScrollView) {
+        let position = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let scrollViewHeight = scrollView.frame.size.height
+        
+        if position > (contentHeight - scrollViewHeight - 100) && !pagination.isLoading && categoryNewsView.articles.count < pagination.totalResults {
+            
+            pagination.isLoading = true
+            pagination.nextPage()
+            
+            // TODO improve logic not to make request in controller
+            TopHeadlinesService.getTopHeadlines(
+                for: UserDefaultsCountryService.getCountryCode(),
+                category: category,
+                page: pagination.currentPage) { [weak self] result in
+                switch result {
+                case .success(let data):
+                    self?.pagination.totalResults = data.totalResults
+                    self?.appendData(articles: data.articles)
+                case .failure(let error):
+                    print("Error fetching headlines: \(error)")
+                }
+                DispatchQueue.main.async {
+                    self?.pagination.isLoading = false
+                }
+            }
+        }
+    }
 }
 
 extension CategoryNewsViewController: CategoryNewsViewProtocol {
@@ -126,6 +176,15 @@ extension CategoryNewsViewController: CategoryNewsViewProtocol {
                 isFavorite: self.presenter.isFavoriteArticle(title: $0.title)
             )
         })
+    }
+}
+
+extension CategoryNewsViewController: DropdownMenuDelegate {
+    func didSelectOption(_ option: String?) {
+        guard let selectedCountryCode = option else {
+            return
+        }
+        UserDefaultsCountryService.saveCountryCode(selectedCountryCode)
     }
 }
 
