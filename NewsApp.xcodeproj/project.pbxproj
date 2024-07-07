@@ -13,10 +13,7 @@
 		471A4DB62C3977E2006B2F95 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471A4DB52C3977E2006B2F95 /* CoreDataStack.swift */; };
 		471A4DB82C397E5C006B2F95 /* CreateFavoriteArticleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471A4DB72C397E5C006B2F95 /* CreateFavoriteArticleModel.swift */; };
 		471A4DBA2C3997DA006B2F95 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471A4DB92C3997DA006B2F95 /* Notifications.swift */; };
-		471A4DC32C39A105006B2F95 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471A4DC22C39A105006B2F95 /* SettingsViewController.swift */; };
-		471A4DC52C39A12F006B2F95 /* SettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471A4DC42C39A12F006B2F95 /* SettingsProtocol.swift */; };
-		471A4DC72C39A166006B2F95 /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471A4DC62C39A166006B2F95 /* SettingsModel.swift */; };
-		471A4DC92C39A271006B2F95 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471A4DC82C39A271006B2F95 /* SettingsView.swift */; };
+		4734F3632C3AE46900BF99DB /* UserDefaultsCountryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4734F3622C3AE46900BF99DB /* UserDefaultsCountryService.swift */; };
 		473E30EE2C37128400A75CEA /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473E30ED2C37128400A75CEA /* TabBarController.swift */; };
 		473E30F22C37132500A75CEA /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473E30F12C37132500A75CEA /* FavoritesViewController.swift */; };
 		473E30F72C371CAD00A75CEA /* FavoritesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473E30F62C371CAD00A75CEA /* FavoritesPresenter.swift */; };
@@ -64,10 +61,7 @@
 		471A4DB52C3977E2006B2F95 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		471A4DB72C397E5C006B2F95 /* CreateFavoriteArticleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFavoriteArticleModel.swift; sourceTree = "<group>"; };
 		471A4DB92C3997DA006B2F95 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
-		471A4DC22C39A105006B2F95 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		471A4DC42C39A12F006B2F95 /* SettingsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsProtocol.swift; sourceTree = "<group>"; };
-		471A4DC62C39A166006B2F95 /* SettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
-		471A4DC82C39A271006B2F95 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		4734F3622C3AE46900BF99DB /* UserDefaultsCountryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsCountryService.swift; sourceTree = "<group>"; };
 		473E30ED2C37128400A75CEA /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		473E30F12C37132500A75CEA /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		473E30F62C371CAD00A75CEA /* FavoritesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesPresenter.swift; sourceTree = "<group>"; };
@@ -139,47 +133,12 @@
 			path = CoreData;
 			sourceTree = "<group>";
 		};
-		471A4DBB2C39A0B4006B2F95 /* Settings */ = {
+		4734F3612C3AE45D00BF99DB /* UserDefaults */ = {
 			isa = PBXGroup;
 			children = (
-				471A4DC12C39A0F8006B2F95 /* Model */,
-				471A4DBE2C39A0D9006B2F95 /* ViewControllers */,
-				471A4DBD2C39A0C9006B2F95 /* Protocols */,
-				471A4DBC2C39A0C2006B2F95 /* View */,
+				4734F3622C3AE46900BF99DB /* UserDefaultsCountryService.swift */,
 			);
-			path = Settings;
-			sourceTree = "<group>";
-		};
-		471A4DBC2C39A0C2006B2F95 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				471A4DC82C39A271006B2F95 /* SettingsView.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		471A4DBD2C39A0C9006B2F95 /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-				471A4DC42C39A12F006B2F95 /* SettingsProtocol.swift */,
-			);
-			path = Protocols;
-			sourceTree = "<group>";
-		};
-		471A4DBE2C39A0D9006B2F95 /* ViewControllers */ = {
-			isa = PBXGroup;
-			children = (
-				471A4DC22C39A105006B2F95 /* SettingsViewController.swift */,
-			);
-			path = ViewControllers;
-			sourceTree = "<group>";
-		};
-		471A4DC12C39A0F8006B2F95 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				471A4DC62C39A166006B2F95 /* SettingsModel.swift */,
-			);
-			path = Model;
+			path = UserDefaults;
 			sourceTree = "<group>";
 		};
 		473E30EC2C37127500A75CEA /* Navigation */ = {
@@ -290,6 +249,7 @@
 		47BE3B592C304EEB005B1120 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				4734F3612C3AE45D00BF99DB /* UserDefaults */,
 				471A4DA92C397513006B2F95 /* CoreData */,
 				47BE3B5C2C305002005B1120 /* Network */,
 				47BE3B5A2C304F0F005B1120 /* Config.swift */,
@@ -453,7 +413,6 @@
 			children = (
 				47CECDB92C3AA08F00811B77 /* CategoryNews */,
 				47CECDA62C3A80D600811B77 /* Categories */,
-				471A4DBB2C39A0B4006B2F95 /* Settings */,
 				473E30EF2C3712EC00A75CEA /* Favorites */,
 				47D9DF292C305AA0007AA452 /* Main */,
 			);
@@ -593,11 +552,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				47CECDC12C3AA16600811B77 /* CategoryNewsViewController.swift in Sources */,
-				471A4DC92C39A271006B2F95 /* SettingsView.swift in Sources */,
 				47D9DF4E2C3068A1007AA452 /* UIImageView+LoadImage.swift in Sources */,
 				47CECDAE2C3A816300811B77 /* CategoriesViewController.swift in Sources */,
 				476FFF752C31AF8C00CF8746 /* GetArticleByQuery.swift in Sources */,
-				471A4DC72C39A166006B2F95 /* SettingsModel.swift in Sources */,
 				47D9DF482C306414007AA452 /* ArticleTableViewCellModel.swift in Sources */,
 				471A4DB42C397777006B2F95 /* FavoriteArticleCD+CoreDataProperties.swift in Sources */,
 				471A4DB32C397777006B2F95 /* FavoriteArticleCD+CoreDataClass.swift in Sources */,
@@ -605,7 +562,6 @@
 				47CECDCE2C3AB53300811B77 /* DropdownMenuView.swift in Sources */,
 				47BE3B612C305105005B1120 /* TopHeadlinesService.swift in Sources */,
 				471A4DB82C397E5C006B2F95 /* CreateFavoriteArticleModel.swift in Sources */,
-				471A4DC32C39A105006B2F95 /* SettingsViewController.swift in Sources */,
 				47BE3B632C30517F005B1120 /* GetTopHeadlinesEndpoint.swift in Sources */,
 				47CECDC62C3AA37100811B77 /* CategoryNewsModel.swift in Sources */,
 				47CECDB22C3A818700811B77 /* CategoriesModel.swift in Sources */,
@@ -624,7 +580,6 @@
 				471A4DAC2C3976FA006B2F95 /* CoreDataFavoriteService.swift in Sources */,
 				473E30EE2C37128400A75CEA /* TabBarController.swift in Sources */,
 				473E30F72C371CAD00A75CEA /* FavoritesPresenter.swift in Sources */,
-				471A4DC52C39A12F006B2F95 /* SettingsProtocol.swift in Sources */,
 				47D9DF3F2C305CA6007AA452 /* MainProtocols.swift in Sources */,
 				473E30F22C37132500A75CEA /* FavoritesViewController.swift in Sources */,
 				47BE3B452C304A1A005B1120 /* SceneDelegate.swift in Sources */,
@@ -636,6 +591,7 @@
 				47D9DF452C306101007AA452 /* ArticleTableViewCell.swift in Sources */,
 				471A4DBA2C3997DA006B2F95 /* Notifications.swift in Sources */,
 				47BE3B5E2C305023005B1120 /* APIClient.swift in Sources */,
+				4734F3632C3AE46900BF99DB /* UserDefaultsCountryService.swift in Sources */,
 				471A4DB62C3977E2006B2F95 /* CoreDataStack.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -13,6 +13,8 @@ class CategoryNewsViewController: UIViewController {
     private var categoryNewsView: ArticleView!
     private var presenter: CategoryNewsPresenterProtocol!
     
+    private let dropdownMenuView: DropdownMenuView = DropdownMenuView.generateCountriesDropdownMenu()
+    
     private let searchController = UISearchController(searchResultsController: nil)
     
     private var pagination = Pagination()
@@ -38,11 +40,13 @@ class CategoryNewsViewController: UIViewController {
         let model = CategoryNewsModel()
         presenter = CategoryNewsPresenter(category: category, view: self, model: model)
         
-        presenter.loadData()
+        presenter.loadData(countryCode: UserDefaultsCountryService.getCountryCode())
         
         // Setup search controller
         navigationItem.searchController = searchController
         searchController.searchBar.delegate = self
+        
+        setupDropdownMenu()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -53,6 +57,29 @@ class CategoryNewsViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.navigationBar.prefersLargeTitles = false
+    }
+}
+
+private extension CategoryNewsViewController {
+    private func setupDropdownMenu() {
+         let menuButton = UIBarButtonItem(image: UIImage(systemName: "arrowtriangle.down.fill"), style: .plain, target: self, action: #selector(showDropdownMenu))
+         navigationItem.rightBarButtonItem = menuButton
+
+         dropdownMenuView.delegate = self
+     }
+
+     @objc private func showDropdownMenu() {
+         dropdownMenuView.showDropdown(in: view)
+     }
+}
+
+extension CategoryNewsViewController: DropdownMenuDelegate {
+    func didSelectOption(_ option: String?) {
+        guard let selectedCountryCode = option else {
+            return
+        }
+        UserDefaultsCountryService.saveCountryCode(selectedCountryCode)
+        presenter.loadData(countryCode: selectedCountryCode)
     }
 }
 

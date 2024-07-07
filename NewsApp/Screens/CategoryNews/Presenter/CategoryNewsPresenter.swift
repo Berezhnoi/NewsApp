@@ -18,8 +18,8 @@ class CategoryNewsPresenter: CategoryNewsPresenterProtocol {
         self.model = model
     }
     
-    func loadData() {
-        model.fetchData(category: category) { [weak self] result in
+    func loadData(countryCode: String? = nil) {
+        model.fetchData(countryCode: countryCode, category: category) { [weak self] result in
             switch result {
             case .success(let data):
                 self?.view?.displayData(data)

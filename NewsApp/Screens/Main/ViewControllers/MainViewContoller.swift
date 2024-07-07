@@ -12,10 +12,9 @@ class MainViewController: UIViewController {
     private var mainView: ArticleView!
     private var presenter: MainPresenterProtocol!
     
-    private let dropdownMenu = DropdownMenuView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
     private let searchController = UISearchController(searchResultsController: nil)
+    private let dropdownMenuView: DropdownMenuView = DropdownMenuView.generateCountriesDropdownMenu()
     
-    private var currentCountryCode: String? = nil // Default country code
     private var pagination = Pagination()
     
     override func viewDidLoad() {
@@ -31,7 +30,7 @@ class MainViewController: UIViewController {
         model.fetchFavoriteArticles()
         presenter = MainPresenter(view: self, model: model)
         
-        presenter.loadData(countryCode: currentCountryCode)
+        presenter.loadData(countryCode: UserDefaultsCountryService.getCountryCode())
         
         // Add an observer for the notification
         NotificationCenter.default.addObserver(self, selector: #selector(handleFavoritesUpdated), name: .favoritesUpdated, object: nil)
@@ -40,16 +39,7 @@ class MainViewController: UIViewController {
         navigationItem.searchController = searchController
         searchController.searchBar.delegate = self
         
-        // Setup dropdown menu in navigation bar
-        let dropdownButton = UIBarButtonItem(image: UIImage(systemName: "arrowtriangle.down.fill"), style: .plain, target: self, action: #selector(dropdownButtonTapped))
-        navigationItem.rightBarButtonItem = dropdownButton
-        
-        dropdownMenu.delegate = self
-    }
-    
-    @objc private func dropdownButtonTapped() {
-        dropdownMenu.frame.origin = CGPoint(x: view.frame.width - dropdownMenu.frame.width - 16, y: navigationController?.navigationBar.frame.height ?? 0)
-        view.addSubview(dropdownMenu)
+        setupDropdownMenu()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -80,8 +70,19 @@ private extension MainViewController {
     
     @objc private func handleFavoritesUpdated() {
         presenter.fetchFavoriteArticles()
-        presenter.loadData(countryCode: currentCountryCode)
+        presenter.loadData(countryCode: UserDefaultsCountryService.getCountryCode())
     }
+    
+    private func setupDropdownMenu() {
+         let menuButton = UIBarButtonItem(image: UIImage(systemName: "arrowtriangle.down.fill"), style: .plain, target: self, action: #selector(showDropdownMenu))
+         navigationItem.rightBarButtonItem = menuButton
+
+         dropdownMenuView.delegate = self
+     }
+
+     @objc private func showDropdownMenu() {
+         dropdownMenuView.showDropdown(in: view)
+     }
 }
 
 extension MainViewController: MainViewProtocol {
@@ -154,17 +155,19 @@ extension MainViewController: ArticleViewDelegate {
 }
 
 extension MainViewController: DropdownMenuDelegate {
-    func didSelectCountry(_ countryCode: String?) {
-        currentCountryCode = countryCode
-        presenter.loadData(countryCode: countryCode)
-        dropdownMenu.removeFromSuperview()
+    func didSelectOption(_ option: String?) {
+        guard let selectedCountryCode = option else {
+            return
+        }
+        UserDefaultsCountryService.saveCountryCode(selectedCountryCode)
+        presenter.loadData(countryCode: selectedCountryCode)
     }
 }
 
 extension MainViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let text = searchBar.text, !text.trimmingCharacters(in: .whitespaces).isEmpty else {
-            presenter.loadData(countryCode: currentCountryCode)
+            presenter.loadData(countryCode: UserDefaultsCountryService.getCountryCode())
             return
         }
         
@@ -182,6 +185,6 @@ extension MainViewController: UISearchBarDelegate {
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        presenter.loadData(countryCode: currentCountryCode)
+        presenter.loadData(countryCode: UserDefaultsCountryService.getCountryCode())
     }
 }

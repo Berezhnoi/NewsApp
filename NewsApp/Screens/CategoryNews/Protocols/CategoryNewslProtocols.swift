@@ -10,13 +10,13 @@ protocol CategoryNewsViewProtocol: AnyObject {
 }
 
 protocol CategoryNewsModelProtocol {
-    func fetchData(category: String, completion: @escaping (Result<TopHeadlinesResponse, Error>) -> Void)
+    func fetchData(countryCode: String?, category: String, completion: @escaping (Result<TopHeadlinesResponse, Error>) -> Void)
     func fetchFavoriteArticles()
     func isFavorite(title: String) -> Bool
 }
 
 protocol CategoryNewsPresenterProtocol: AnyObject {
-    func loadData()
+    func loadData(countryCode: String?)
     func fetchFavoriteArticles()
     func isFavoriteArticle(title: String) -> Bool
 }

@@ -18,7 +18,7 @@ class CategoryNewsModel: CategoryNewsModelProtocol {
         return favoriteArticles.contains { $0.title == title }
     }
 
-    func fetchData(category: String, completion: @escaping (Result<TopHeadlinesResponse, Error>) -> Void) {
-        TopHeadlinesService.getTopHeadlines(for: "us", category: category, completion: completion)
+    func fetchData(countryCode: String? = nil, category: String, completion: @escaping (Result<TopHeadlinesResponse, Error>) -> Void) {
+        TopHeadlinesService.getTopHeadlines(for: countryCode, category: category, completion: completion)
     }
 }
