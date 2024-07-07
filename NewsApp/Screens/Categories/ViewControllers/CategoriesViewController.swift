@@ -48,6 +48,11 @@ private extension CategoriesViewController {
         
         return topInset
     }
+    
+    private func navigateToCategoryNews(for category: String) {
+        let categoryNewsVC = CategoryNewsViewController(category: category)
+        navigationController?.pushViewController(categoryNewsVC, animated: true)
+    }
 }
 
 extension CategoriesViewController: CategoriesViewDelegate {
@@ -60,7 +65,8 @@ extension CategoriesViewController: CategoriesViewDelegate {
     }
     
     func didSelectCategory(at index: Int) {
-        let selectedCategory =  model.category(at: index)
-        print("Selected category: \(selectedCategory)")
+        let selectedCategory = model.category(at: index)
+        // Navigate to category news view
+        navigateToCategoryNews(for: selectedCategory)
     }
 }
