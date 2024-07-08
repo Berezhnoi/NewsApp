@@ -22,6 +22,14 @@ class ArticleView: UIView {
     
     var articles: [ArticleTableViewCellModel] = [] {
         didSet {
+            filteredArticles = articles.filter { article in
+                article.title.lowercased() != "[removed]" && article.description.lowercased() != "[removed]"
+            }
+        }
+    }
+    
+    private var filteredArticles: [ArticleTableViewCellModel] = [] {
+        didSet {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
@@ -65,7 +73,7 @@ class ArticleView: UIView {
 
 extension ArticleView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return articles.count
+        return filteredArticles.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -73,7 +81,7 @@ extension ArticleView: UITableViewDataSource {
         else {
             fatalError()
         }
-        cell.configure(with: articles[indexPath.row]) { [weak self] updatedArticle in
+        cell.configure(with: filteredArticles[indexPath.row]) { [weak self] updatedArticle in
             self?.delegate?.onFavoritePress(article: updatedArticle)
         }
         return cell
@@ -83,7 +91,7 @@ extension ArticleView: UITableViewDataSource {
 extension ArticleView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let article = articles[indexPath.row]
+        let article = filteredArticles[indexPath.row]
         
         guard let articleUrl = URL(string: article.url) else {
             return
