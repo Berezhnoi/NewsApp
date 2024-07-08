@@ -19,4 +19,8 @@ class Config {
     public static func getApiKey2() -> String {
         return "7749d51592284a32938a8dfe6e7e2456"
     }
+    
+    public static func getApiKey3() -> String {
+        return "d4c6033831874098a485537dd0bbd2d0"
+    }
 }

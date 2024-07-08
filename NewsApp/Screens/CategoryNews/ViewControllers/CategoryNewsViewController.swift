@@ -110,7 +110,10 @@ private extension CategoryNewsViewController {
 
 extension CategoryNewsViewController: ArticleViewDelegate {
     func didPullToRefresh() {
-        categoryNewsView.endRefreshing()
+        loadInitialData()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.categoryNewsView.endRefreshing()
+        }
     }
     
     func onFavoritePress(article: ArticleTableViewCellModel) {

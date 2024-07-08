@@ -116,7 +116,9 @@ extension MainViewController: MainViewProtocol {
 extension MainViewController: ArticleViewDelegate {
     func didPullToRefresh() {
         loadInitialData()
-        mainView.endRefreshing()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.mainView.endRefreshing()
+        }
     }
     
     func onFavoritePress(article: ArticleTableViewCellModel) {

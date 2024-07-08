@@ -47,6 +47,14 @@ class ArticleTableViewCell: UITableViewCell {
         return button
     }()
     
+    let shareButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(systemName: "square.and.arrow.up"), for: .normal)
+        button.tintColor = .gray
+        return button
+    }()
+    
     private var article: ArticleTableViewCellModel?
     private var heartButtonAction: ((ArticleTableViewCellModel) -> Void)?
     
@@ -54,6 +62,7 @@ class ArticleTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
         heartButton.addTarget(self, action: #selector(heartButtonTapped), for: .touchUpInside)
+        shareButton.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
@@ -80,6 +89,7 @@ class ArticleTableViewCell: UITableViewCell {
         cellWrapperView.addSubview(titleLabel)
         cellWrapperView.addSubview(descriptionLabel)
         cellWrapperView.addSubview(heartButton)
+        cellWrapperView.addSubview(shareButton)
 
         NSLayoutConstraint.activate([
             cellWrapperView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
@@ -99,10 +109,13 @@ class ArticleTableViewCell: UITableViewCell {
             descriptionLabel.leadingAnchor.constraint(equalTo: articleImageView.trailingAnchor, constant: 10),
             descriptionLabel.trailingAnchor.constraint(equalTo: cellWrapperView.trailingAnchor, constant: -15),
             descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5),
-            descriptionLabel.bottomAnchor.constraint(equalTo: cellWrapperView.bottomAnchor, constant: -22),
+            descriptionLabel.bottomAnchor.constraint(equalTo: cellWrapperView.bottomAnchor, constant: -25),
 
             heartButton.trailingAnchor.constraint(equalTo: cellWrapperView.trailingAnchor, constant: -8),
-            heartButton.bottomAnchor.constraint(equalTo: cellWrapperView.bottomAnchor, constant: -2)
+            heartButton.bottomAnchor.constraint(equalTo: cellWrapperView.bottomAnchor, constant: -2),
+            
+            shareButton.trailingAnchor.constraint(equalTo: heartButton.leadingAnchor, constant: -8),
+            shareButton.bottomAnchor.constraint(equalTo: cellWrapperView.bottomAnchor, constant: -2),
         ])
 
         // Set minimum height constraint
@@ -148,5 +161,25 @@ class ArticleTableViewCell: UITableViewCell {
         article.isFavorite.toggle()
         updateHeartButton(isFavorite: article.isFavorite)
         heartButtonAction?(article)
+    }
+    
+    @objc private func shareButtonTapped() {
+        guard let article = article else { return }
+        let content = "\(article.title)\n\n\(article.url)"
+        
+        let activityViewController = UIActivityViewController(activityItems: [content], applicationActivities: nil)
+        
+        // Find the current view controller to present the activity view controller from
+        var viewController: UIViewController?
+        var responder: UIResponder? = self
+        while responder != nil {
+            responder = responder?.next
+            if let nextResponder = responder as? UIViewController {
+                viewController = nextResponder
+                break
+            }
+        }
+        
+        viewController?.present(activityViewController, animated: true, completion: nil)
     }
 }
