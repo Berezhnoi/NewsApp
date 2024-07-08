@@ -189,5 +189,27 @@ extension CategoryNewsViewController: DropdownMenuDelegate {
 }
 
 extension CategoryNewsViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let searchText = searchBar.text, !searchText.trimmingCharacters(in: .whitespaces).isEmpty else {
+            loadInitialData()
+            return
+        }
+        
+        TopHeadlinesService.getTopHeadlines(
+            for: UserDefaultsCountryService.getCountryCode(),
+            page: pagination.currentPage,
+            query: searchText
+        ) { [weak self] result in
+            switch result {
+            case .success(let data):
+                self?.displayData(data)
+            case .failure(let error):
+                print("Error fetching headlines: \(error)")
+            }
+        }
+    }
     
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        loadInitialData()
+    }
 }

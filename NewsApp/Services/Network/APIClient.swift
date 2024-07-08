@@ -17,7 +17,7 @@ protocol APIEndpoint {
 
 class APIClient {
     private static let API_URL = Config.getApiUrl()
-    private static let API_KEY = Config.getApiKey()
+    private static let API_KEY = Config.getApiKey2()
     
     func request<T: APIEndpoint>(_ endpoint: T, completion: @escaping (Result<T.ResponseType, Error>) -> Void) {
         // Construct URL

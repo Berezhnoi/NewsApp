@@ -14,9 +14,10 @@ class TopHeadlinesService {
         for countryCode: String? = nil,
         category: String? = nil,
         page: Int? = 1,
+        query: String? = nil,
         completion: @escaping (Result<TopHeadlinesResponse, Error>) -> Void)
     {
-        let endpoint: GetTopHeadlinesEndpoint = GetTopHeadlinesEndpoint(countryCode: countryCode, category: category, page: page)
+        let endpoint: GetTopHeadlinesEndpoint = GetTopHeadlinesEndpoint(countryCode: countryCode, category: category, page: page, query: query)
         apiClient.request(endpoint) { result in
             completion(result)
         }

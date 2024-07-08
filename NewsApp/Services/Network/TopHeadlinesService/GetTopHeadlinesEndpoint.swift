@@ -15,13 +15,13 @@ class GetTopHeadlinesEndpoint: APIEndpoint {
     let headers: [String: String]?
     let body: Data?
     
-    init(countryCode: String? = nil, category: String? = nil, page: Int?) {
+    init(countryCode: String? = nil, category: String? = nil, page: Int? = 1, query: String? = nil) {
         self.headers = nil
         self.body = nil
-        self.path = GetTopHeadlinesEndpoint.buildPath(countryCode: countryCode, category: category, page: page)
+        self.path = GetTopHeadlinesEndpoint.buildPath(countryCode: countryCode, category: category, page: page, query: query)
     }
     
-    private static func buildPath(countryCode: String?, category: String? = nil, page: Int?) -> String {
+    private static func buildPath(countryCode: String?, category: String? = nil, page: Int?, query: String?) -> String {
         var basePath = "/top-headlines"
         
         var queryParams: [String] = []
@@ -37,7 +37,12 @@ class GetTopHeadlinesEndpoint: APIEndpoint {
             queryParams.append("category=\(encodedCategory)")
         }
         
-        // Add page parameter
+
+        if let query = query, !query.isEmpty {
+            let encodedQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? query
+            queryParams.append("q=\(encodedQuery)")
+        }
+        
         queryParams.append("page=\(page ?? 1)")
         
         if !queryParams.isEmpty {

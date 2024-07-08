@@ -179,22 +179,23 @@ extension MainViewController: DropdownMenuDelegate {
 
 extension MainViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let text = searchBar.text, !text.trimmingCharacters(in: .whitespaces).isEmpty else {
+        guard let searchText = searchBar.text, !searchText.trimmingCharacters(in: .whitespaces).isEmpty else {
             loadInitialData()
             return
         }
         
-//        SearchArticleService.getArticleByQuery(with: text, page: 1){ [weak self] result in
-//            switch result {
-//            case .success(let data):
-//                self?.displayData(data)
-//            case .failure(let error):
-//                print("Error fetching headlines: \(error)")
-//            }
-//            DispatchQueue.main.async {
-//                self?.searchController.dismiss(animated: true, completion: nil)
-//            }
-//        }
+        TopHeadlinesService.getTopHeadlines(
+            for: UserDefaultsCountryService.getCountryCode(),
+            page: pagination.currentPage,
+            query: searchText
+        ) { [weak self] result in
+            switch result {
+            case .success(let data):
+                self?.displayData(data)
+            case .failure(let error):
+                print("Error fetching headlines: \(error)")
+            }
+        }
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
