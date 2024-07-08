@@ -38,6 +38,7 @@ class CategoryNewsViewController: UIViewController {
         view.addSubview(categoryNewsView)
         
         let model = CategoryNewsModel()
+        model.fetchFavoriteArticles()
         presenter = CategoryNewsPresenter(category: category, view: self, model: model)
         
         loadInitialData()
@@ -48,6 +49,7 @@ class CategoryNewsViewController: UIViewController {
         
         // Add observers for notification
         NotificationCenter.default.addObserver(self, selector: #selector(handleFavoritesUpdated), name: .favoritesUpdated, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleFavoritesUpdated), name: .articlesUpdated, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleCountryChanged), name: .countryChanged, object: nil)
         
         setupDropdownMenu()
@@ -125,7 +127,7 @@ extension CategoryNewsViewController: ArticleViewDelegate {
         }
         
         // Post notification
-        NotificationCenter.default.post(name: .articlesUpdated, object: nil)
+        NotificationCenter.default.post(name: .categoryArticlesUpdated, object: nil)
     }
     
     func navigateToArticle(url: URL) {

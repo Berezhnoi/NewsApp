@@ -34,6 +34,7 @@ class MainViewController: UIViewController {
         
         // Add an observers for notification
         NotificationCenter.default.addObserver(self, selector: #selector(handleFavoritesUpdated), name: .favoritesUpdated, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleFavoritesUpdated), name: .categoryArticlesUpdated, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleCountryChanged), name: .countryChanged, object: nil)
         
         // Setup search controller

@@ -30,6 +30,7 @@ class FavoritesViewController: UIViewController {
         
         // Add an observer for the notification
         NotificationCenter.default.addObserver(self, selector: #selector(handleArticlesUpdated), name: .articlesUpdated, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleArticlesUpdated), name: .categoryArticlesUpdated, object: nil)
         
         // Setup search controller
         navigationItem.searchController = searchController
